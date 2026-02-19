@@ -55,9 +55,9 @@ Simulation controls:
 - `n_steps` — number of time steps in \([0, T]\)  
   The time increment is:
 
-  $$
-  \Delta t = \frac{T}{n_{\text{steps}}}
-  $$
+$$
+\Delta t = \frac{T}{n_{\text{steps}}}
+$$
 
   With `T = 1` and `n_steps = 252`, the grid matches the common “trading days per year” convention.
 
