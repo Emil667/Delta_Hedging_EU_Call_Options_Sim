@@ -23,9 +23,9 @@ Key assumptions:
 
 1. **Underlying dynamics (GBM under the risk-neutral measure)**  
    The underlying price follows:
-   $$
-   dS_t = r S_t\,dt + \sigma S_t\,dW_t
-   $$
+$$
+dS_t = r S_t\,dt + \sigma S_t\,dW_t
+$$
    GBM is used because it is the standard Black–Scholes model: it implies log-returns are conditionally normal and volatility \(\sigma\) is constant.
 
 2. **Constant risk-free rate and financing at \(r\)**  
@@ -79,9 +79,9 @@ Hedging frequencies:
 The script defines:
 
 - \(d_1\):
-  $$
-  d_1 = \frac{\ln(S/K) + (r + \tfrac{1}{2}\sigma^2)\tau}{\sigma\sqrt{\tau}}
-  $$
+$$
+d_1 = \frac{\ln(S/K) + (r + \tfrac{1}{2}\sigma^2)\tau}{\sigma\sqrt{\tau}}
+$$
 - \(d_2 = d_1 - \sigma\sqrt{\tau}\)
 
 For a call option, the Black–Scholes price is:
@@ -101,7 +101,10 @@ The code simulates log-prices using the discrete-time GBM form:
 $$
 \ln S_{t+\Delta t} = \ln S_t + \left(r - \tfrac{1}{2}\sigma^2\right)\Delta t + \sigma\sqrt{\Delta t}\,Z
 $$
-with \(Z \sim \mathcal{N}(0,1)\).  
+with 
+$$
+\(Z \sim \mathcal{N}(0,1)\).  
+$$
 This produces an array `S` with shape `(n_paths, n_steps + 1)`.
 
 ### Step 4 — Apply discrete-time delta hedging
@@ -110,34 +113,34 @@ This produces an array `S` with shape `(n_paths, n_steps + 1)`.
 1. **Initialize at \(t=0\)**  
    Compute the option price \(C_0\) and delta \(\Delta_0\).  
    Hold \(\Delta_0\) shares and put the remainder in cash:
-   $$
-   \text{cash}_0 = C_0 - \Delta_0 S_0
-   $$
+$$
+\text{cash}_0 = C_0 - \Delta_0 S_0
+$$
 
 2. **Accrue cash at the risk-free rate**  
    Each step:
-   $$
-   \text{cash} \leftarrow \text{cash}\cdot e^{r\Delta t}
-   $$
+$$
+\text{cash} \leftarrow \text{cash}\cdot e^{r\Delta t}
+$$
 
 3. **Rebalance on schedule**  
    When \(t\) hits the rebalance grid:
    - compute the new delta \(\Delta_t\),
    - trade \(\Delta_t - \Delta_{t^-}\) shares,
    - update cash by the trade cost:
-     $$
-     \text{cash} \leftarrow \text{cash} - (\Delta_t - \Delta_{t^-})S_t
-     $$
+$$
+\text{cash} \leftarrow \text{cash} - (\Delta_t - \Delta_{t^-})S_t
+$$
 
 4. **Compute terminal portfolio value and hedging error**  
    Terminal portfolio:
-   $$
-   V_T = \Delta_T S_T + \text{cash}_T
-   $$
+$$
+V_T = \Delta_T S_T + \text{cash}_T
+$$
    Hedging error:
-   $$
-   V_T - (S_T - K)^+
-   $$
+$$
+V_T - (S_T - K)^+
+$$
 
 The function returns a vector of hedging errors (one per path).
 
