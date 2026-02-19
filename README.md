@@ -88,7 +88,11 @@ $$
 d_1 = \frac{\ln(S/K) + (r + \tfrac{1}{2}\sigma^2)\tau}{\sigma\sqrt{\tau}}
 $$
 
-- \(d_2 = d_1 - \sigma\sqrt{\tau}\)
+- \(d_2\):
+
+$$
+d_2 = d_1 - \sigma\sqrt{\tau}\)
+$$
 
 For a call option, the Black–Scholes price is:
 
